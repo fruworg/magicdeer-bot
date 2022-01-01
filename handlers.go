@@ -31,11 +31,11 @@ func (a *application) msgHandler(m *tbot.Message) {
 	rand.Seed(time.Now().UnixNano())
 	arr := strings.Split(m.Text, " или ")
 	if len(arr) > 1 {
-		rnd := (rand.Intn(len(arr)))
-		msg = (arr[rnd])
+		rnd := rand.Intn(len(arr))
+		msg = arr[rnd]
 	} else {
 		rnd := rand.Intn(10)
-		msg = (answer[rnd])
+		msg = answer[rnd]
 	}
 	a.client.SendMessage(m.Chat.ID, msg, tbot.OptParseModeMarkdown)
 }
