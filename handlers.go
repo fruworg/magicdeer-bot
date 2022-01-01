@@ -50,7 +50,7 @@ o       /  /     ,|
 		rnd := rand.Intn(10)
 		msg = answer[rnd]
 	}
-	msg = fmt.Sprintf("``` < %s > %s ```", msg, magicDeer)
+	msg = fmt.Sprintf("```< %s > %s```", msg, magicDeer)
 	a.client.SendChatAction(m.Chat.ID, tbot.ActionTyping)
 	tsleep := rand.Intn(2500-500) + 500
 	time.Sleep(time.Duration(tsleep) * time.Millisecond)
