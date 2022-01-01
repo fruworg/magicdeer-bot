@@ -17,16 +17,18 @@ func (a *application) startHandler(m *tbot.Message) {
 
 // Handle the msg command here
 func (a *application) msgHandler(m *tbot.Message) {
+	//deer by asciiart.eu
+	//flower by eng50232@leonis.nus.sg
 	magicDeer := `
    \ /   
-    :   "\))    ((
-     \   //      \\/"   o
-      :  \\____// |  
-   *    ~/~    ~\/~
-       ( Q/  _/Q  ~      .
+    :     ))    ((
+     \   // (") \\   o
+      :  \\_\)/_//  
+   *    ~/~  ' ~\~\
+       ( Q/  _/Q  ~     .
 o       /  /     ,|
     '  (~~~)__.-\ |
-        \'~~    | |   *
+        \'~~    | |  *
   .      |      | |
 		`
 	answer := map[int]string{
