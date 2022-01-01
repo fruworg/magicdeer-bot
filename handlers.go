@@ -5,8 +5,10 @@ import (
 	"math/rand"
 	"strings"
 	"time"
+	"log"
 
 	"github.com/yanzay/tbot/v2"
+	"github.com/PuerkitoBio/goquery"
 )
 
 	//deer by asciiart.eu
