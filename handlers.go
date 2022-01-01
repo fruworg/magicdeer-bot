@@ -18,10 +18,10 @@ func (a *application) startHandler(m *tbot.Message) {
 // Handle the msg command here
 func (a *application) msgHandler(m *tbot.Message) {
 	magicDeer := `
-    \ /   
-     :  "\))    ((
-      \  //      \\/"    o
-         \\____// |  
+   \ /   
+    :   "\))    ((
+     \   //      \\/"    o
+      :  \\____// |  
    *    ~/~    ~\/~
        ( Q/  _/Q  ~       .
 o       /  /     ,|
