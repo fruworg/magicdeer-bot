@@ -48,7 +48,7 @@ o       /  /     ,|
 	if len(arr) == 2 {
 		msg = "Ты не оставил мне выбора"
 		for i := 0; i < len(arr)-1; i++ {
-			if arr[i] != arr[i+1] {
+			if strings.TrimRight(arr[i], "?") != strings.TrimRight(arr[i+1], "?") {
 				rnd := rand.Intn(len(arr))
 				msg = strings.TrimRight(arr[rnd], "?")
 				continue
