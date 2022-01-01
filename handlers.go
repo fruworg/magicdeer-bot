@@ -20,15 +20,15 @@ func (a *application) msgHandler(m *tbot.Message) {
 	//deer by asciiart.eu
 	//flower by eng50232@leonis.nus.sg
 	magicDeer := `
-   \ /   
-    :     ))    ((
-     \   // (") \\   o
-      :  \\_\)/_//  
-   *    ~/~  ' ~\~\
-       ( Q/  _/Q  ~     .
+  \ /   .              *
+.  :      ))    ((
+   \     // (") \\   '      .
+    :    \\_\)/_//  
+ *   \  ~/~  ' ~\~\
+       ( Q/  _/Q  ~     o
 o       /  /     ,|
     '  (~~~)__.-\ |
-        \'~~    | |  *
+        \'~~    | |   *
   .      |      | |
 		`
 	answer := map[int]string{
