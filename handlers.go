@@ -16,7 +16,7 @@ func (a *application) startHandler(m *tbot.Message) {
 
 // Handle the msg command here
 func (a *application) msgHandler(m *tbot.Message) {
-	magicDeer: `
+	magicDeer := `
     \ /   
      :  "\))    ((
       \  //      \\/"    o
