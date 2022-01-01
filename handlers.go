@@ -16,6 +16,18 @@ func (a *application) startHandler(m *tbot.Message) {
 
 // Handle the msg command here
 func (a *application) msgHandler(m *tbot.Message) {
+	magicDeer: `
+    \ /   
+     :  "\))    ((
+      \  //      \\/"    o
+         \\____// |  
+   *    ~/~    ~\/~
+       ( Q/  _/Q  ~       .
+o       /  /     ,|
+    '  (~~~)__.-\ |
+        \'~~    | |    *
+  .      |      | |
+		`
 	answer := map[int]string{
 		0: "Да.",
 		1: "Нет.",
@@ -37,6 +49,7 @@ func (a *application) msgHandler(m *tbot.Message) {
 		rnd := rand.Intn(10)
 		msg = answer[rnd]
 	}
+	msg = fmt.Sprintf("``` < %s > %s ```", msg, magicDeer)
 	a.client.SendChatAction(m.Chat.ID, tbot.ActionTyping)
 	tsleep := rand.Intn(2500-500) + 500
 	time.Sleep(time.Duration(tsleep) * time.Millisecond)
