@@ -1,4 +1,4 @@
-module github.com/fruworg/dailygoroskop-bot
+module github.com/fruworg/magicdeer-bot
 
 go 1.17
 
