@@ -1,11 +1,12 @@
 package main
 
 import (
-	"fmt"
 	"math/rand"
+	"net/http"
 	"strings"
 	"time"
 	"log"
+	"fmt"
 
 	"github.com/yanzay/tbot/v2"
 	"github.com/PuerkitoBio/goquery"
@@ -65,7 +66,7 @@ func (a *application) msgHandler(m *tbot.Message) {
 		log.Fatal(err)
 	}
 	doc.Find(`div[style="margin: 20px 0;"]`).Each(func(i int, s *goquery.Selection) {
-		msg = fmt.Sprintf("Ежедневний гороскоп для тебя, " + signs[m.Text] + ": \n" + strings.TrimSpace(s.Text()))
+		msg = fmt.Sprintf("Ежедневний гороскоп для тебя, %s: \n%s" signs[m.Text], strings.TrimSpace(s.Text()))
 	})}else{	
 	answer := map[int]string{
 		0: "Да",
