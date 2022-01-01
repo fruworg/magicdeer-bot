@@ -45,7 +45,7 @@ o       /  /     ,|
 	msg := "Ты сделал что-то не так!"
 	rand.Seed(time.Now().UnixNano())
 	arr := strings.Split(m.Text, " или ")
-	if len(arr) == 2 {
+	if len(arr) > 1 {
 		msg = "Ты не оставил мне выбора"
 		for i := 0; i < len(arr)-1; i++ {
 			if strings.TrimRight(arr[i], "?") != strings.TrimRight(arr[i+1], "?") {
