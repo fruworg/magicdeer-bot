@@ -47,7 +47,7 @@ o       /  /     ,|
 	arr := strings.Split(m.Text, " или ")
 	if len(arr) > 1 {
 		rnd := rand.Intn(len(arr))
-		msg = arr[rnd]
+		msg = strings.TrimRight(arr[rnd], "?")
 	} else {
 		rnd := rand.Intn(10)
 		msg = answer[rnd]
