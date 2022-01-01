@@ -45,17 +45,18 @@ o       /  /     ,|
 	msg := "Ты сделал что-то не так!"
 	rand.Seed(time.Now().UnixNano())
 	arr := strings.Split(m.Text, " или ")
-	if len(arr) > 1 {
-		rnd := rand.Intn(len(arr))
-		msg = strings.TrimRight(arr[rnd], "?")
-		if len(arr) == 2{
-			if rnd == 0{
-				if strings.TrimRight(arr[1], "?") == msg{
-				msg = "Ты не оставил мне выбора"}
-			if rnd == 1{
-				if strings.TrimRight(arr[0], "?") == msg{
-				msg = "Ты не оставил мне выбора"}
+	if len(arr) == 2 {
+		if rnd == 0 {
+			if strings.TrimRight(arr[1], "?") == msg {
+				msg = "Ты не оставил мне выбора"
 			}
+		}
+		if rnd == 1 {
+			if strings.TrimRight(arr[0], "?") == msg {
+				msg = "Ты не оставил мне выбора"
+			}
+		}
+	}
 	} else {
 		rnd := rand.Intn(10)
 		msg = answer[rnd]
