@@ -1,2 +1,2 @@
-### [t.me/asciisaybot](https://t.me/asciisaybot) 
-[asciiart.eu](https://www.asciiart.eu/animals/) + [tbot](https://github.com/yanzay/tbot) <br />
+### [t.me/dailygoroskopbot](https://t.me/dailygoroskopbot) 
+[ignio.com](https://ignio.com) + [tbot](https://github.com/yanzay/tbot) <br />
