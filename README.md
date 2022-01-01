@@ -6,5 +6,5 @@
      |__|_|  (____  /\___  /|__|\___  >____ |\___  >\___  >__|            |___  /\____/|__|  
            \/     \//_____/         \/     \/    \/     \/                    \/             
 ```
-### [t.me/dailygoroskopbot](https://t.me/dailygoroskopbot) 
+### [t.me/magicdeerbot](https://t.me/magicdeerbot) 
 [ignio.com](https://ignio.com) + [tbot](https://github.com/yanzay/tbot) <br />
