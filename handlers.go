@@ -16,7 +16,7 @@ func (a *application) startHandler(m *tbot.Message) {
 
 // Handle the msg command here
 func (a *application) msgHandler(m *tbot.Message) {
-	answer = map[int]string{
+	answer := map[int]string{
 		0: "Да.",
 		1: "Нет.",
 		2: "Это не важно.",
