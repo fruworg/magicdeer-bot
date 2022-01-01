@@ -44,8 +44,8 @@ o       /  /     ,|
 		9: "Попробуй ещё раз"}
 	msg := "Ты сделал что-то не так!"
 	rand.Seed(time.Now().UnixNano())
+	arr := strings.Split(m.Text, " или ")
 	if len(arr) == 2 {
-		arr := strings.Split(m.Text, " или ")
 		rnd := rand.Intn(len(arr))
 		msg = arr[rnd]
 		if rnd == 0 {
