@@ -51,12 +51,11 @@ o       /  /     ,|
 		if len(arr) == 2{
 			if rnd == 0{
 				if strings.TrimRight(arr[1], "?") == msg{
-				msg = "Ты не оставил мне выбора"}}
+				msg = "Ты не оставил мне выбора"}
 			if rnd == 1{
 				if strings.TrimRight(arr[0], "?") == msg{
-				msg = "Ты не оставил мне выбора"}}
+				msg = "Ты не оставил мне выбора"}
 			}
-		}
 	} else {
 		rnd := rand.Intn(10)
 		msg = answer[rnd]
