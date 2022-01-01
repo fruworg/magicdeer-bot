@@ -27,7 +27,7 @@ func init() {
 }
 
 func main() {
-	bot = tbot.New(token, tbot.WithWebhook("https://dailygoroskop-bot.herokuapp.com", ":"+os.Getenv("PORT")))
+	bot = tbot.New(token, tbot.WithWebhook("https://magicdeer-bot.herokuapp.com", ":"+os.Getenv("PORT")))
 	app.client = bot.Client()
 	bot.HandleMessage("/start", app.startHandler)
 	bot.HandleMessage(".+", app.msgHandler)
