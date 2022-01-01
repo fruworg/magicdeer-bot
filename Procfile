@@ -1,1 +1,1 @@
-web: bin/dailygoroskop-bot
+web: bin/magicdeer-bot
