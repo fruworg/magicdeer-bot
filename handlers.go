@@ -20,11 +20,11 @@ func (a *application) msgHandler(m *tbot.Message) {
 	//deer by asciiart.eu
 	//flower by eng50232@leonis.nus.sg
 	magicDeer := `
- \ /                   *
-  :   .   ))    ((
+ \ /    .              *
+* :       ))    ((
    \     // (") \\   '      .
     :    \\_\)/_//  
- *   \  ~/~  ' ~\~\
+ .   \  ~/~  ' ~\~\
        ( Q/  _/Q  ~     o
 o       /  /     ,|
     '  (~~~)__.-\ |
