@@ -1,11 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"math/rand"
 	"strings"
 	"time"
-	"fmt"
-	
+
 	"github.com/yanzay/tbot/v2"
 )
 
@@ -41,7 +41,7 @@ o       /  /     ,|
 		6: "Никогда",
 		7: "100%",
 		8: "1 из 100",
-		9: "Попробуй ещё раз",}
+		9: "Попробуй ещё раз"}
 	msg := "Ты сделал что-то не так!"
 	rand.Seed(time.Now().UnixNano())
 	arr := strings.Split(m.Text, " или ")
@@ -56,7 +56,6 @@ o       /  /     ,|
 				msg = "Ты не оставил мне выбора"
 			}
 		}
-	}
 	} else {
 		rnd := rand.Intn(10)
 		msg = answer[rnd]
