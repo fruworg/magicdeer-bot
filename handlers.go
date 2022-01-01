@@ -47,7 +47,7 @@ o       /  /     ,|
 	arr := strings.Split(m.Text, " или ")
 	if len(arr) == 2 {
 		rnd := rand.Intn(len(arr))
-		msg = arr[rnd]
+		msg = strings.TrimRight(arr[rnd], "?")
 		if rnd == 0 {
 			if strings.TrimRight(arr[1], "?") == msg {
 				msg = "Ты не оставил мне выбора"
