@@ -36,20 +36,20 @@ func (a *application) startHandler(m *tbot.Message) {
 // Handle the msg command here
 func (a *application) msgHandler(m *tbot.Message) {
 	msg := "Ты сделал что-то не так"
+	signs := map[string]string{
+		"Овен":     "aries",
+		"Телец":    "taurus",
+		"Близнецы": "gemini",
+		"Рак":      "cancer",
+		"Лев":      "leo",
+		"Дева":     "virgio",
+		"Весы":     "libra",
+		"Скорпион": "scorpio",
+		"Стрелец":  "saggitarius",
+		"Козерог":  "capricorn",
+		"Водолей":  "aquarius",
+		"Рыбы":     "pisces"}
 	if signs[m.Text] != "" {
-		signs := map[string]string{
-			"Овен":     "aries",
-			"Телец":    "taurus",
-			"Близнецы": "gemini",
-			"Рак":      "cancer",
-			"Лев":      "leo",
-			"Дева":     "virgio",
-			"Весы":     "libra",
-			"Скорпион": "scorpio",
-			"Стрелец":  "saggitarius",
-			"Козерог":  "capricorn",
-			"Водолей":  "aquarius",
-			"Рыбы":     "pisces"}
 		day := "tod"
 		res, err := http.Get("https://ignio.com/r/daily/" + day + "/" + signs[m.Text] + ".html")
 		if err != nil {
