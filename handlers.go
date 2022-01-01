@@ -16,6 +16,17 @@ func (a *application) startHandler(m *tbot.Message) {
 
 // Handle the msg command here
 func (a *application) msgHandler(m *tbot.Message) {
+	answer = map[int]string{
+		0: "Да.",
+		1: "Нет.",
+		2: "Это не важно.",
+		3: "...",
+		4: "У тебя есть проблемы серьёзней.",
+		5: "Да, хотя зря.",
+		6: "Никогда.",
+		7: "100%",
+		8: "1 из 100.",
+		9: "Попробуй ещё раз.",}
 	msg := "Ты сделал что-то не так!"
 	rand.Seed(time.Now().UnixNano())
 	arr := strings.Split(m.Text, " или ")
@@ -23,7 +34,8 @@ func (a *application) msgHandler(m *tbot.Message) {
 		rnd := (rand.Intn(len(arr)))
 		msg = (arr[rnd])
 	} else {
-		msg = "Допускается минимум два варианта!"
+		rnd := rand.Intn(10)
+		msg = (answer[rnd])
 	}
 	a.client.SendMessage(m.Chat.ID, msg, tbot.OptParseModeMarkdown)
 }
