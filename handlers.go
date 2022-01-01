@@ -39,6 +39,6 @@ func (a *application) msgHandler(m *tbot.Message) {
 	}
 	a.client.SendChatAction(m.Chat.ID, tbot.ActionTyping)
 	tsleep := rand.Intn(2500-500) + 500
-	time.Sleep(int(tsleep) * time.Millisecond)
+	time.Sleep(time.Duration(tsleep) * time.Millisecond)
 	a.client.SendMessage(m.Chat.ID, msg, tbot.OptParseModeMarkdown)
 }
