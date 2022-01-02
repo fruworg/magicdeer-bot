@@ -29,7 +29,8 @@ o       /  /     ,|
 
 // Handle the /start command here
 func (a *application) startHandler(m *tbot.Message) {
-	msg := "hello"
+	msg := "Для гороскопа введи свой знак задиака на русском.\nДля выбора нескольких вариантов:"+
+	"\nГоланг или Руби или Питон\n\nДля ответа на вопорс: Я крутой?"
 	a.client.SendMessage(m.Chat.ID, msg, tbot.OptParseModeMarkdown)
 }
 
