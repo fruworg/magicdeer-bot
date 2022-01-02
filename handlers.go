@@ -1,15 +1,18 @@
 package main
 
 import (
-	"fmt"
-	"log"
 	"math/rand"
 	"net/http"
+	"context"
 	"strings"
 	"time"
-
+	"fmt"
+	"log"
+	"os"
+	
 	"github.com/PuerkitoBio/goquery"
 	"github.com/yanzay/tbot/v2"
+	"github.com/jackc/pgx/v4"
 )
 
 //deer by asciiart.eu
