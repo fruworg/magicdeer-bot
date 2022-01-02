@@ -102,22 +102,17 @@ func (a *application) msgHandler(m *tbot.Message) {
 		}
 	}
 	if m.Text == "тест"{
+	msg = "ok"
 	conn, err := pgx.Connect(context.Background(), os.Getenv("DATABASE_URL"))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 		os.Exit(1)
+		msg = "err"
 	}
 	defer conn.Close(context.Background())
-
-	var name string
-	var weight int64
-	err = conn.QueryRow(context.Background(), "select name, weight from widgets where id=$1", 42).Scan(&name, &weight)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
-		os.Exit(1)
 	}
-
-	msg = fmt.Sprintf("%s; %s", name, weight)
+	if strings.ToLower(strings.TrimRight(m.Text, " .!")) == "спасибо"{
+		msg = "Пожалуйста"
 	}
 	msg = fmt.Sprintf("```\n< %s > %s```", msg, magicDeer)
 	a.client.SendChatAction(m.Chat.ID, tbot.ActionTyping)
