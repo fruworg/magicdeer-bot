@@ -123,7 +123,7 @@ func (a *application) msgHandler(m *tbot.Message) {
 	}
 	msg = fmt.Sprintf("```\n< %s > %s```", msg, magicDeer)
 	a.client.SendChatAction(m.Chat.ID, tbot.ActionTyping)
-	tsleep := rand.Intn(2500-500) + 500
+	tsleep := rand.Intn(1000-200) + 200
 	time.Sleep(time.Duration(tsleep) * time.Millisecond)
 	a.client.SendMessage(m.Chat.ID, msg, tbot.OptParseModeMarkdown)
 }
