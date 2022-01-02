@@ -51,7 +51,7 @@ func (a *application) msgHandler(m *tbot.Message) {
 		"рыбы":     "pisces"}
 	if signs[strings.ToLower(m.Text)] != "" {
 		day := "tod"
-		res, err := http.Get("https://ignio.com/r/daily/" + day + "/" + signs[m.Text] + ".html")
+		res, err := http.Get("https://ignio.com/r/daily/" + day + "/" + signs[strings.ToLower(m.Text)] + ".html")
 		if err != nil {
 			log.Fatal(err)
 		}
