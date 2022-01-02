@@ -1,6 +1,6 @@
 module github.com/fruworg/magicdeer-bot
 
-go 1.13
+go 1.17
 
 require (
 	github.com/joho/godotenv v1.3.0
