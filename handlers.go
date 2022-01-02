@@ -53,10 +53,10 @@ func (a *application) msgHandler(m *tbot.Message) {
 		"близнецы": "gemini",
 		"рак":      "cancer",
 		"лев":      "leo",
-		"дева":     "virgio",
+		"дева":     "virgo",
 		"весы":     "libra",
 		"скорпион": "scorpio",
-		"стрелец":  "saggitarius",
+		"стрелец":  "sagittarius",
 		"козерог":  "capricorn",
 		"водолей":  "aquarius",
 		"рыбы":     "pisces"}
