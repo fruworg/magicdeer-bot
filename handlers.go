@@ -79,7 +79,7 @@ func (a *application) msgHandler(m *tbot.Message) {
 			log.Fatal(err)
 		}
 		doc.Find(`div[style="margin: 20px 0;"]`).Each(func(i int, s *goquery.Selection) {
-			msg = fmt.Sprintf("Гороскоп для тебя, %s: \n%s", m.Text, strings.TrimSpace(s.Text()))
+			msg = fmt.Sprintf("Гороскоп для тебя, %s: \n%s", strings.TrimRight(m.Text, " .!"), strings.TrimSpace(s.Text()))
 		})
 	} else {
 		answer := map[int]string{
