@@ -7,4 +7,4 @@
            \/     \//_____/         \/     \/    \/     \/                    \/             
 ```
 ### [t.me/magicdeerbot](https://t.me/magicdeerbot) 
-[ignio.com](https://ignio.com) + postgres + [tbot](https://github.com/yanzay/tbot) <br />
+[ignio.com](https://ignio.com) + [pgx](https://github.com/jackc/pgx) + [tbot](https://github.com/yanzay/tbot) <br />
