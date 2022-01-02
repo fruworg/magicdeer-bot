@@ -66,7 +66,7 @@ func (a *application) msgHandler(m *tbot.Message) {
 			log.Fatal(err)
 		}
 		doc.Find(`div[style="margin: 20px 0;"]`).Each(func(i int, s *goquery.Selection) {
-			msg = fmt.Sprintf("Ежедневний гороскоп для тебя, %s: \n%s", signs[m.Text], strings.TrimSpace(s.Text()))
+			msg = fmt.Sprintf("Ежедневний гороскоп для тебя, %s: \n%s", m.Text, strings.TrimSpace(s.Text()))
 		})
 	} else {
 		answer := map[int]string{
@@ -95,8 +95,8 @@ func (a *application) msgHandler(m *tbot.Message) {
 			rnd := rand.Intn(10)
 			msg = answer[rnd]
 		}
-		msg = fmt.Sprintf("```\n< %s > %s```", msg, magicDeer)
 	}
+	msg = fmt.Sprintf("```\n< %s > %s```", msg, magicDeer)
 	a.client.SendChatAction(m.Chat.ID, tbot.ActionTyping)
 	tsleep := rand.Intn(2500-500) + 500
 	time.Sleep(time.Duration(tsleep) * time.Millisecond)
