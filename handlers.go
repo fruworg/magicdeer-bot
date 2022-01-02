@@ -62,7 +62,7 @@ func (a *application) msgHandler(m *tbot.Message) {
 		"водолей":  "aquarius",
 		"рыбы":     "pisces"}
 	
-	if signs[strings.ToLower(m.Text)] != "" {
+	if signs[strings.ToLower(strings.TrimRight(m.Text, " .!"))] != "" {
 		day := "tod"
 		res, err := http.Get("https://ignio.com/r/daily/" + day + "/" + signs[strings.ToLower(m.Text)] + ".html")
 		if err != nil {
