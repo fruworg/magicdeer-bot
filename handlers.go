@@ -12,6 +12,7 @@ import (
 	
 	"github.com/PuerkitoBio/goquery"
 	"github.com/yanzay/tbot/v2"
+	"github.com/joho/godotenv"
 	"github.com/jackc/pgx/v4"
 )
 
