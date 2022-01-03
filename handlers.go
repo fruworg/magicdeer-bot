@@ -18,7 +18,6 @@ import (
 //deer by asciiart.eu
 //flower by eng50232@leonis.nus.sg
 var magicDeer = `
-
  \ /   .              *
 * :       ))    ((
    \     // (") \\   '      .
@@ -48,6 +47,7 @@ func (a *application) startHandler(m *tbot.Message) {
 
 // Handle the msg command here
 func (a *application) msgHandler(m *tbot.Message) {
+	a.client.SendChatAction(m.Chat.ID, tbot.ActionTyping)
 	msg := "Ты сделал что-то не так"
 	signs := map[string]string{
 		"овен":     "aries",
@@ -127,8 +127,7 @@ func (a *application) msgHandler(m *tbot.Message) {
 	if strings.ToLower(strings.TrimRight(m.Text, " .!")) == "спасибо" {
 		msg = "Пожалуйста"
 	}
-	msg = fmt.Sprintf("```\n< %s > %s```", msg, magicDeer)
-	a.client.SendChatAction(m.Chat.ID, tbot.ActionTyping)
+	msg = fmt.Sprintf("```\n< %s > %s ```", msg, magicDeer)
 	tsleep := rand.Intn(1000-200) + 200
 	time.Sleep(time.Duration(tsleep) * time.Millisecond)
 	a.client.SendMessage(m.Chat.ID, msg, tbot.OptParseModeMarkdown)
