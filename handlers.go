@@ -1,4 +1,5 @@
 package main
+
 import (
 	"math/rand"
 	"net/http"
@@ -13,6 +14,7 @@ import (
 	"github.com/yanzay/tbot/v2"
 	"github.com/jackc/pgx/v4"
 )
+
 //deer by asciiart.eu
 //flower by eng50232@leonis.nus.sg
 var magicDeer = `
@@ -27,6 +29,7 @@ o       /  /     ,|
         \'~~    | |   *
   .      |      | |
 		`
+
 // Handle the /start command here
 func (a *application) startHandler(m *tbot.Message) {
 	msg := "Что может *сакральный олень?*\n\nОтветить на вопрос:\nЗадай вопрос и ты получишь ответ." +
@@ -41,6 +44,7 @@ func (a *application) startHandler(m *tbot.Message) {
 	"\nВ случае нарушения правил выше\nты не получишь достоверного ответа."
 	a.client.SendMessage(m.Chat.ID, msg, tbot.OptParseModeMarkdown)
 }
+
 // Handle the msg command here
 func (a *application) msgHandler(m *tbot.Message) {
 	msg := "Ты сделал что-то не так"
@@ -68,6 +72,7 @@ func (a *application) msgHandler(m *tbot.Message) {
 		if res.StatusCode != 200 {
 			log.Fatalf("status code error: %d %s", res.StatusCode, res.Status)
 		}
+
 		// Load the HTML document
 		doc, err := goquery.NewDocumentFromReader(res.Body)
 		if err != nil {
@@ -106,21 +111,13 @@ func (a *application) msgHandler(m *tbot.Message) {
 	}
 	if m.Text == "тест"{
 	msg = "ok"
+	conn, err := pgx.Connect(context.Background(), os.Getenv("DATABASE_URL"))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 		os.Exit(1)
+		msg = "err"
 	}
 	defer conn.Close(context.Background())
-
-	var name string
-	var weight int64
-	err = conn.QueryRow(context.Background(), "select name, weight from widgets where id=$1", 42).Scan(&name, &weight)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
-		os.Exit(1)
-	}
-
-	fmt.Println(name, weight)
 	}
 	if strings.ToLower(strings.TrimRight(m.Text, " .!")) == "спасибо"{
 		msg = "Пожалуйста"
