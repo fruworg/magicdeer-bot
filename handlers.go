@@ -11,7 +11,7 @@ import (
 	
 	"github.com/PuerkitoBio/goquery"
 	"github.com/yanzay/tbot/v2"
-	"github.com/jackc/pgx/v4"
+	"github.com/jackc/pgx/v4/pgxpool"
 )
 //deer by asciiart.eu
 //flower by eng50232@leonis.nus.sg
