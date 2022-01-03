@@ -1,18 +1,18 @@
 package main
 
 import (
-	"math/rand"
-	"net/http"
 	"context"
-	"strings"
-	"time"
 	"fmt"
 	"log"
+	"math/rand"
+	"net/http"
 	"os"
-	
+	"strings"
+	"time"
+
 	"github.com/PuerkitoBio/goquery"
+	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/yanzay/tbot/v2"
-	"github.com/jackc/pgx/v4"
 )
 
 //deer by asciiart.eu
@@ -33,15 +33,15 @@ o       /  /     ,|
 // Handle the /start command here
 func (a *application) startHandler(m *tbot.Message) {
 	msg := "Что может *сакральный олень?*\n\nОтветить на вопрос:\nЗадай вопрос и ты получишь ответ." +
-	"\nНа вопрос ответом должны быть да/нет.\n\nВыбрать из нескольких вариантов:" +
-	"\nРаздели варианты союзом *или*.\nМинимум - 2 варианта, максимума нет.\nНе забудь про *пробелы*, пример:" +
-	"\nЛечь спать *или* дочитать мангу?\n" +
-	"\nПредсказать будущее:\nДля начала выбери свой знак зодиака.\nОтправь его в чат на русском языке." +
-	"\nДалее введи соответствующую команду:\n*/today* - предсказание на сегодня\n*/tomorrow* - предсказание на завтра" +
-	//сделаю "\n*/daily* - ежедневные предсказания" + 
-	"\n\nВнимание:\n*Сакрального оленя* нельзя тревожить," + 
-	"\nзадавая тот же вопрос несколько раз.\nТакже нельзя задавать любые\nвопросы связанные с *оленем*.\n" +
-	"\nВ случае нарушения правил выше\nты не получишь достоверного ответа."
+		"\nНа вопрос ответом должны быть да/нет.\n\nВыбрать из нескольких вариантов:" +
+		"\nРаздели варианты союзом *или*.\nМинимум - 2 варианта, максимума нет.\nНе забудь про *пробелы*, пример:" +
+		"\nЛечь спать *или* дочитать мангу?\n" +
+		"\nПредсказать будущее:\nДля начала выбери свой знак зодиака.\nОтправь его в чат на русском языке." +
+		"\nДалее введи соответствующую команду:\n*/today* - предсказание на сегодня\n*/tomorrow* - предсказание на завтра" +
+		//сделаю "\n*/daily* - ежедневные предсказания" +
+		"\n\nВнимание:\n*Сакрального оленя* нельзя тревожить," +
+		"\nзадавая тот же вопрос несколько раз.\nТакже нельзя задавать любые\nвопросы связанные с *оленем*.\n" +
+		"\nВ случае нарушения правил выше\nты не получишь достоверного ответа."
 	a.client.SendMessage(m.Chat.ID, msg, tbot.OptParseModeMarkdown)
 }
 
@@ -61,7 +61,7 @@ func (a *application) msgHandler(m *tbot.Message) {
 		"козерог":  "capricorn",
 		"водолей":  "aquarius",
 		"рыбы":     "pisces"}
-	
+
 	if signs[strings.ToLower(strings.TrimRight(m.Text, " .!"))] != "" {
 		day := "tod"
 		res, err := http.Get("https://ignio.com/r/daily/" + day + "/" + signs[strings.ToLower(strings.TrimRight(m.Text, " .!"))] + ".html")
@@ -109,22 +109,21 @@ func (a *application) msgHandler(m *tbot.Message) {
 			msg = answer[rnd]
 		}
 	}
-	if m.Text == "тест"{
-	msg = "ok"
-	databaseUrl := os.Getenv("DATABASE_URL"))
-	dbPool, err := pgxpool.Connect(context.Background(), databaseUrl)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "unable to connect to database: %v\n", err)
-		os.Exit(1)
+	if m.Text == "тест" {
+		msg = "ok"
+		databaseUrl := os.Getenv("DATABASE_URL")
+		dbPool, err := pgxpool.Connect(context.Background(), databaseUrl)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "unable to connect to database: %v\n", err)
+			os.Exit(1)
+		}
+		//to close DB pool
+		defer dbPool.Close()
+		ExecuteSelectQuery(dbPool)
+		ExecuteFunction(dbPool)
+		log.Println("stopping program")
 	}
-	//to close DB pool
-	defer dbPool.Close()
-
-	ExecuteSelectQuery(dbPool)
-	ExecuteFunction(dbPool)
-	log.Println("stopping program")
-	}
-	if strings.ToLower(strings.TrimRight(m.Text, " .!")) == "спасибо"{
+	if strings.ToLower(strings.TrimRight(m.Text, " .!")) == "спасибо" {
 		msg = "Пожалуйста"
 	}
 	msg = fmt.Sprintf("```\n< %s > %s```", msg, magicDeer)
