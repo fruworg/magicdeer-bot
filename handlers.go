@@ -18,6 +18,7 @@ import (
 //deer by asciiart.eu
 //flower by eng50232@leonis.nus.sg
 var magicDeer = `
+
  \ /   .              *
 * :       ))    ((
    \     // (") \\   '      .
