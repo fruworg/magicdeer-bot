@@ -129,6 +129,9 @@ func (a *application) msgHandler(m *tbot.Message) {
 	msg = fmt.Sprintf("```\n< %s > %s ```", msg, magicDeer)
 	tsleep := rand.Intn(1000-200) + 200
 	time.Sleep(time.Duration(tsleep) * time.Millisecond)
+	if m.Text == "жопа"{
+		msg = fmt.Sprintf ("```%s```", magicDeer)
+	}
 	a.client.SendMessage(m.Chat.ID, msg, tbot.OptParseModeMarkdown)
 }
 
