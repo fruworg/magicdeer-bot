@@ -115,9 +115,18 @@ func (a *application) msgHandler(m *tbot.Message) {
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 		os.Exit(1)
-		msg = "err"
 	}
 	defer conn.Close(context.Background())
+
+	var name string
+	var weight int64
+	err = conn.QueryRow(context.Background(), "select name, weight from widgets where id=$1", 42).Scan(&name, &weight)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
+		os.Exit(1)
+	}
+
+	fmt.Println(name, weight)
 	}
 	if strings.ToLower(strings.TrimRight(m.Text, " .!")) == "спасибо"{
 		msg = "Пожалуйста"
