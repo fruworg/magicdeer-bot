@@ -11,7 +11,7 @@ import (
 	
 	"github.com/PuerkitoBio/goquery"
 	"github.com/yanzay/tbot/v2"
-	"github.com/jackc/pgx/v4/pgxpool"
+	"github.com/jackc/pgx/v4"
 )
 //deer by asciiart.eu
 //flower by eng50232@leonis.nus.sg
@@ -106,9 +106,22 @@ func (a *application) msgHandler(m *tbot.Message) {
 	}
 	if m.Text == "тест"{
 	msg = "ok"
-	databaseUrl := os.Getenv("DATABASE_URL")
-	dbPool, err := pgxpool.Connect(context.Background(), databaseUrl)
+	conn, err := pgx.Connect(context.Background(), os.Getenv("DATABASE_URL"))
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
+		os.Exit(1)
+	}
+	defer conn.Close(context.Background())
 
+	var name string
+	var weight int64
+	err = conn.QueryRow(context.Background(), "select name, weight from widgets where id=$1", 42).Scan(&name, &weight)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
+		os.Exit(1)
+	}
+
+	fmt.Println(name, weight)
 	if err != nil {
 		msg = "err"
 	}
@@ -127,60 +140,4 @@ func (a *application) msgHandler(m *tbot.Message) {
 	tsleep := rand.Intn(1000-200) + 200
 	time.Sleep(time.Duration(tsleep) * time.Millisecond)
 	a.client.SendMessage(m.Chat.ID, msg, tbot.OptParseModeMarkdown)
-}
-
-func ExecuteSelectQuery(dbPool *pgxpool.Pool) {
-	log.Println("starting execution of select query")
-	//execute the query and get result rows
-	rows, err := dbPool.Query(context.Background(), "select * from public.person")
-	if err != nil {
-		log.Fatal("error while executing query")
-	}
-
-	log.Println("result:")
-	//iterate through the rows
-	for rows.Next() {
-		values, err := rows.Values()
-		if err != nil {
-			log.Fatal("error while iterating dataset")
-		}
-		//convert DB types to Go types
-		id := values[0].(int32)
-		firstName := values[1].(string)
-		lastName := values[2].(string)
-		dateOfBirth := values[3].(time.Time)
-		log.Println("[id:", id, ", first_name:", firstName, ", last_name:", lastName, ", date_of_birth:", dateOfBirth, "]")
-	}
-
-}
-
-func ExecuteFunction(dbPool *pgxpool.Pool) {
-	log.Println("starting execution of databse function")
-	// id can be taken as a user input
-	// for the time being, let's hard code it
-	id := 1
-
-	//execute the query and get result rows
-	rows, err := dbPool.Query(context.Background(), "select * from public.get_person_details($1)", id)
-	log.Println("input id: ", id)
-	if err != nil {
-		log.Fatal("error while executing query")
-	}
-
-	log.Println("result:")
-	//iterate through the rows
-	for rows.Next() {
-		values, err := rows.Values()
-		if err != nil {
-			log.Fatal("error while iterating dataset")
-		}
-
-		//convert DB types to Go types
-		firstName := values[0].(string)
-		lastName := values[1].(string)
-		dateOfBirth := values[2].(time.Time)
-
-		log.Println("[first_name:", firstName, ", last_name:", lastName, ", date_of_birth:", dateOfBirth, "]")
-	}
-
 }
