@@ -27,8 +27,7 @@ var magicDeer = `
 o       /  /     ,|
     '  (~~~)__.-\ |
         \'~~    | |   *
-  .      |      | |
-		`
+  .      |      | |`
 
 // Handle the /start command here
 func (a *application) startHandler(m *tbot.Message) {
