@@ -106,7 +106,6 @@ func (a *application) msgHandler(m *tbot.Message) {
 	}
 	if m.Text == "тест"{
 	msg = "ok"
-	conn, err := pgx.Connect(context.Background(), os.Getenv("DATABASE_URL"))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 		os.Exit(1)
@@ -122,15 +121,6 @@ func (a *application) msgHandler(m *tbot.Message) {
 	}
 
 	fmt.Println(name, weight)
-	if err != nil {
-		msg = "err"
-	}
-	//to close DB pool
-	defer dbPool.Close()
-
-	ExecuteSelectQuery(dbPool)
-	ExecuteFunction(dbPool)
-	log.Println("stopping program")
 	}
 	if strings.ToLower(strings.TrimRight(m.Text, " .!")) == "спасибо"{
 		msg = "Пожалуйста"
