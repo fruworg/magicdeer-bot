@@ -1,20 +1,18 @@
 package main
-
 import (
-	"context"
-	"fmt"
-	"log"
 	"math/rand"
 	"net/http"
-	"os"
+	"context"
 	"strings"
 	"time"
-
+	"fmt"
+	"log"
+	"os"
+	
 	"github.com/PuerkitoBio/goquery"
-	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/yanzay/tbot/v2"
+	"github.com/jackc/pgx/v4"
 )
-
 //deer by asciiart.eu
 //flower by eng50232@leonis.nus.sg
 var magicDeer = `
@@ -27,26 +25,24 @@ var magicDeer = `
 o       /  /     ,|
     '  (~~~)__.-\ |
         \'~~    | |   *
-  .      |      | |`
-
+  .      |      | |
+		`
 // Handle the /start command here
 func (a *application) startHandler(m *tbot.Message) {
 	msg := "Что может *сакральный олень?*\n\nОтветить на вопрос:\nЗадай вопрос и ты получишь ответ." +
-		"\nНа вопрос ответом должны быть да/нет.\n\nВыбрать из нескольких вариантов:" +
-		"\nРаздели варианты союзом *или*.\nМинимум - 2 варианта, максимума нет.\nНе забудь про *пробелы*, пример:" +
-		"\nЛечь спать *или* дочитать мангу?\n" +
-		"\nПредсказать будущее:\nДля начала выбери свой знак зодиака.\nОтправь его в чат на русском языке." +
-		"\nДалее введи соответствующую команду:\n*/today* - предсказание на сегодня\n*/tomorrow* - предсказание на завтра" +
-		//сделаю "\n*/daily* - ежедневные предсказания" +
-		"\n\nВнимание:\n*Сакрального оленя* нельзя тревожить," +
-		"\nзадавая тот же вопрос несколько раз.\nТакже нельзя задавать любые\nвопросы связанные с *оленем*.\n" +
-		"\nВ случае нарушения правил выше\nты не получишь достоверного ответа."
+	"\nНа вопрос ответом должны быть да/нет.\n\nВыбрать из нескольких вариантов:" +
+	"\nРаздели варианты союзом *или*.\nМинимум - 2 варианта, максимума нет.\nНе забудь про *пробелы*, пример:" +
+	"\nЛечь спать *или* дочитать мангу?\n" +
+	"\nПредсказать будущее:\nДля начала выбери свой знак зодиака.\nОтправь его в чат на русском языке." +
+	"\nДалее введи соответствующую команду:\n*/today* - предсказание на сегодня\n*/tomorrow* - предсказание на завтра" +
+	//сделаю "\n*/daily* - ежедневные предсказания" + 
+	"\n\nВнимание:\n*Сакрального оленя* нельзя тревожить," + 
+	"\nзадавая тот же вопрос несколько раз.\nТакже нельзя задавать любые\nвопросы связанные с *оленем*.\n" +
+	"\nВ случае нарушения правил выше\nты не получишь достоверного ответа."
 	a.client.SendMessage(m.Chat.ID, msg, tbot.OptParseModeMarkdown)
 }
-
 // Handle the msg command here
 func (a *application) msgHandler(m *tbot.Message) {
-	a.client.SendChatAction(m.Chat.ID, tbot.ActionTyping)
 	msg := "Ты сделал что-то не так"
 	signs := map[string]string{
 		"овен":     "aries",
@@ -61,7 +57,7 @@ func (a *application) msgHandler(m *tbot.Message) {
 		"козерог":  "capricorn",
 		"водолей":  "aquarius",
 		"рыбы":     "pisces"}
-
+	
 	if signs[strings.ToLower(strings.TrimRight(m.Text, " .!"))] != "" {
 		day := "tod"
 		res, err := http.Get("https://ignio.com/r/daily/" + day + "/" + signs[strings.ToLower(strings.TrimRight(m.Text, " .!"))] + ".html")
@@ -72,7 +68,6 @@ func (a *application) msgHandler(m *tbot.Message) {
 		if res.StatusCode != 200 {
 			log.Fatalf("status code error: %d %s", res.StatusCode, res.Status)
 		}
-
 		// Load the HTML document
 		doc, err := goquery.NewDocumentFromReader(res.Body)
 		if err != nil {
@@ -109,26 +104,22 @@ func (a *application) msgHandler(m *tbot.Message) {
 			msg = answer[rnd]
 		}
 	}
-	if m.Text == "тест" {
-		msg = "ok"
-		databaseUrl := os.Getenv("DATABASE_URL")
-		dbPool, err := pgxpool.Connect(context.Background(), databaseUrl)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "unable to connect to database: %v\n", err)
-			os.Exit(1)
-		}
-		//to close DB pool
-		defer dbPool.Close()
-		ExecuteSelectQuery(dbPool)
-		ExecuteFunction(dbPool)
-		log.Println("stopping program")
+	if m.Text == "тест"{
+	msg = "ok"
+	conn, err := pgx.Connect(context.Background(), os.Getenv("DATABASE_URL"))
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
+		os.Exit(1)
+		msg = "err"
 	}
-	if strings.ToLower(strings.TrimRight(m.Text, " .!")) == "спасибо" {
+	defer conn.Close(context.Background())
+	}
+	if strings.ToLower(strings.TrimRight(m.Text, " .!")) == "спасибо"{
 		msg = "Пожалуйста"
 	}
-	msg = fmt.Sprintf("```\n< %s > %s ```", msg, magicDeer)
+	msg = fmt.Sprintf("```\n< %s > %s```", msg, magicDeer)
+	a.client.SendChatAction(m.Chat.ID, tbot.ActionTyping)
 	tsleep := rand.Intn(1000-200) + 200
 	time.Sleep(time.Duration(tsleep) * time.Millisecond)
-	}
 	a.client.SendMessage(m.Chat.ID, msg, tbot.OptParseModeMarkdown)
 }
