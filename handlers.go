@@ -118,8 +118,6 @@ func (a *application) msgHandler(m *tbot.Message) {
 		msg = "ok"
 		client := redis.NewClient(&redis.Options{
 			Addr:     os.Getenv("REDIS_URL"),
-			Password: "",
-			DB:       0,
 		})
 
 		json, err := json.Marshal(Author{Sign: m.Text, Alert: true})
