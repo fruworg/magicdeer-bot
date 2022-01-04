@@ -29,6 +29,10 @@ o       /  /     ,|
         \'~~    | |   *
   .      |      | |
 		`
+type Author struct {
+	Sign string `json:"sign"`
+	Alert bool  `json:"alert"`
+}
 
 // Handle the /start command here
 func (a *application) startHandler(m *tbot.Message) {
@@ -111,22 +115,25 @@ func (a *application) msgHandler(m *tbot.Message) {
 	}
 	if m.Text == "тест"{
 	msg = "ok"
-	conn, err := pgx.Connect(context.Background(), os.Getenv("DATABASE_URL"))
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
-		os.Exit(1)
-	}
-	defer conn.Close(context.Background())
+	client := redis.NewClient(&redis.Options{
+		Addr:     os.Getenv("REDIS_URL"),
+		Password: "",
+		DB:       0,
+	})
 
-	var name string
-	var weight int64
-	err = conn.QueryRow(context.Background(), "select name, weight from widgets where id=$1", 42).Scan(&name, &weight)
+	json, err := json.Marshal(Author{Sign: m.Text, Alert: "0"})
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
-		os.Exit(1)
+		fmt.Println(err)
 	}
-
-	fmt.Println(name, weight)
+	err = client.Set(m.Chat.ID, json, 0).Err()
+	if err != nil {
+		fmt.Println(err)
+	}
+	val, err := client.Get(m.Chat.ID).Result()
+	if err != nil {
+		fmt.Println(err)
+	}
+	msg = val
 	}
 	if strings.ToLower(strings.TrimRight(m.Text, " .!")) == "спасибо"{
 		msg = "Пожалуйста"
