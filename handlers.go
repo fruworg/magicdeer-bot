@@ -1,18 +1,18 @@
 package main
 
 import (
-	"math/rand"
-	"net/http"
-	"context"
-	"strings"
-	"time"
+	"encoding/json"
 	"fmt"
 	"log"
+	"math/rand"
+	"net/http"
 	"os"
-	
+	"strings"
+	"time"
+
 	"github.com/PuerkitoBio/goquery"
+	"github.com/go-redis/redis"
 	"github.com/yanzay/tbot/v2"
-	"github.com/jackc/pgx/v4"
 )
 
 //deer by asciiart.eu
@@ -29,23 +29,24 @@ o       /  /     ,|
         \'~~    | |   *
   .      |      | |
 		`
+
 type Author struct {
-	Sign string `json:"sign"`
-	Alert bool  `json:"alert"`
+	Sign  string `json:"sign"`
+	Alert bool   `json:"alert"`
 }
 
 // Handle the /start command here
 func (a *application) startHandler(m *tbot.Message) {
 	msg := "Что может *сакральный олень?*\n\nОтветить на вопрос:\nЗадай вопрос и ты получишь ответ." +
-	"\nНа вопрос ответом должны быть да/нет.\n\nВыбрать из нескольких вариантов:" +
-	"\nРаздели варианты союзом *или*.\nМинимум - 2 варианта, максимума нет.\nНе забудь про *пробелы*, пример:" +
-	"\nЛечь спать *или* дочитать мангу?\n" +
-	"\nПредсказать будущее:\nДля начала выбери свой знак зодиака.\nОтправь его в чат на русском языке." +
-	"\nДалее введи соответствующую команду:\n*/today* - предсказание на сегодня\n*/tomorrow* - предсказание на завтра" +
-	//сделаю "\n*/daily* - ежедневные предсказания" + 
-	"\n\nВнимание:\n*Сакрального оленя* нельзя тревожить," + 
-	"\nзадавая тот же вопрос несколько раз.\nТакже нельзя задавать любые\nвопросы связанные с *оленем*.\n" +
-	"\nВ случае нарушения правил выше\nты не получишь достоверного ответа."
+		"\nНа вопрос ответом должны быть да/нет.\n\nВыбрать из нескольких вариантов:" +
+		"\nРаздели варианты союзом *или*.\nМинимум - 2 варианта, максимума нет.\nНе забудь про *пробелы*, пример:" +
+		"\nЛечь спать *или* дочитать мангу?\n" +
+		"\nПредсказать будущее:\nДля начала выбери свой знак зодиака.\nОтправь его в чат на русском языке." +
+		"\nДалее введи соответствующую команду:\n*/today* - предсказание на сегодня\n*/tomorrow* - предсказание на завтра" +
+		//сделаю "\n*/daily* - ежедневные предсказания" +
+		"\n\nВнимание:\n*Сакрального оленя* нельзя тревожить," +
+		"\nзадавая тот же вопрос несколько раз.\nТакже нельзя задавать любые\nвопросы связанные с *оленем*.\n" +
+		"\nВ случае нарушения правил выше\nты не получишь достоверного ответа."
 	a.client.SendMessage(m.Chat.ID, msg, tbot.OptParseModeMarkdown)
 }
 
@@ -65,7 +66,7 @@ func (a *application) msgHandler(m *tbot.Message) {
 		"козерог":  "capricorn",
 		"водолей":  "aquarius",
 		"рыбы":     "pisces"}
-	
+
 	if signs[strings.ToLower(strings.TrimRight(m.Text, " .!"))] != "" {
 		day := "tod"
 		res, err := http.Get("https://ignio.com/r/daily/" + day + "/" + signs[strings.ToLower(strings.TrimRight(m.Text, " .!"))] + ".html")
@@ -113,29 +114,29 @@ func (a *application) msgHandler(m *tbot.Message) {
 			msg = answer[rnd]
 		}
 	}
-	if m.Text == "тест"{
-	msg = "ok"
-	client := redis.NewClient(&redis.Options{
-		Addr:     os.Getenv("REDIS_URL"),
-		Password: "",
-		DB:       0,
-	})
+	if m.Text == "тест" {
+		msg = "ok"
+		client := redis.NewClient(&redis.Options{
+			Addr:     os.Getenv("REDIS_URL"),
+			Password: "",
+			DB:       0,
+		})
 
-	json, err := json.Marshal(Author{Sign: m.Text, Alert: "0"})
-	if err != nil {
-		fmt.Println(err)
+		json, err := json.Marshal(Author{Sign: m.Text, Alert: true})
+		if err != nil {
+			fmt.Println(err)
+		}
+		err = client.Set(m.Chat.ID, json, 0).Err()
+		if err != nil {
+			fmt.Println(err)
+		}
+		val, err := client.Get(m.Chat.ID).Result()
+		if err != nil {
+			fmt.Println(err)
+		}
+		msg = val
 	}
-	err = client.Set(m.Chat.ID, json, 0).Err()
-	if err != nil {
-		fmt.Println(err)
-	}
-	val, err := client.Get(m.Chat.ID).Result()
-	if err != nil {
-		fmt.Println(err)
-	}
-	msg = val
-	}
-	if strings.ToLower(strings.TrimRight(m.Text, " .!")) == "спасибо"{
+	if strings.ToLower(strings.TrimRight(m.Text, " .!")) == "спасибо" {
 		msg = "Пожалуйста"
 	}
 	msg = fmt.Sprintf("```\n< %s > %s```", msg, magicDeer)
