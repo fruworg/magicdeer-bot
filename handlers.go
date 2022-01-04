@@ -117,7 +117,7 @@ func (a *application) msgHandler(m *tbot.Message) {
 	if m.Text == "тест" {
 		msg = "ok"
 		client := redis.NewClient(&redis.Options{
-			Addr:     os.Getenv("REDIS_URL"),
+			Addr:     os.Getenv("REDIS_TLS_URL"),
 		})
 
 		json, err := json.Marshal(Author{Sign: m.Text, Alert: true})
