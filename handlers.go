@@ -91,7 +91,7 @@ func (a *application) msgHandler(m *tbot.Message) {
 		})
 		sign, err := client.Get(m.Chat.ID).Result()
 		if err == redis.Nil {
-        		msg = "Сначала выбери знак зодиака!\nПросто напиши его на русском язке."
+        		msg = "Сначала выбери знак зодиака!\nКоманда */start* в помощь."
 		} else {
 		sign = strings.TrimLeft(sign, `{"sign":"`)
 		sign = strings.TrimRight(sign, `"}`)
