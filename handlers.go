@@ -85,7 +85,8 @@ func (a *application) msgHandler(m *tbot.Message) {
 		if err != nil {
 			fmt.Println(err)
 		}
-		msg = val
+		msg = val[1]
+
 	}else if m.Text == "/today" || m.Text == "/tomorrow" {
 		day := ""
 		if m.Text == "/today"{
