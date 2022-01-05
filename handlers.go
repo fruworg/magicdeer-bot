@@ -85,7 +85,7 @@ func (a *application) msgHandler(m *tbot.Message) {
 		if err != nil {
 			fmt.Println(err)
 		}
-		msg = strings.TrimLeft(msg, `{"sign":"`
+		msg = strings.TrimLeft(msg, `{"sign":"`)
 		msg = strings.TrimRight(msg, `"}`)
 
 	} else if m.Text == "/today" || m.Text == "/tomorrow" {
