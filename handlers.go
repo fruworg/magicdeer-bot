@@ -90,9 +90,9 @@ func (a *application) msgHandler(m *tbot.Message) {
 			DB:       opt.DB,
 		})
 		sign, err := client.Get(m.Chat.ID).Result()
-		if err != nil {
-			fmt.Println(err)
-		}
+		if err == redis.Nil {
+        		msg = "Сначала выбери знак зодиака!\nПросто напиши его на русском язке."
+		} else {
 		sign = strings.TrimLeft(sign, `{"sign":"`)
 		sign = strings.TrimRight(sign, `"}`)
 		
@@ -119,7 +119,7 @@ func (a *application) msgHandler(m *tbot.Message) {
 		
 		doc.Find(`div[style="margin: 20px 0;"]`).Each(func(i int, s *goquery.Selection) {
 			msg = fmt.Sprintf("Гороскоп для тебя, %s: \n%s", sign, strings.TrimSpace(s.Text()))
-		})
+		})}
 	} else {
 		answer := map[int]string{
 			0: "Да",
