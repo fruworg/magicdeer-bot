@@ -81,21 +81,28 @@ func (a *application) msgHandler(m *tbot.Message) {
 		if err != nil {
 			fmt.Println(err)
 		}
-		val, err := client.Get(m.Chat.ID).Result()
+
+	} else if m.Text == "/today" || m.Text == "/tomorrow" {
+		opt, err := redis.ParseURL(os.Getenv("REDIS_URL"))
+		client := redis.NewClient(&redis.Options{
+			Addr:     opt.Addr,
+			Password: opt.Password,
+			DB:       opt.DB,
+		})
+		sign, err := client.Get(m.Chat.ID).Result()
 		if err != nil {
 			fmt.Println(err)
 		}
-		msg = strings.TrimLeft(val, `{"sign":"`)
-		msg = strings.TrimRight(msg, `"}`)
-
-	} else if m.Text == "/today" || m.Text == "/tomorrow" {
+		sign = strings.TrimLeft(sign, `{"sign":"`)
+		sign = strings.TrimRight(sign, `"}`)
+		
 		day := ""
 		if m.Text == "/today" {
 			day = "tod"
 		} else {
 			day = "tom"
 		}
-		res, err := http.Get("https://ignio.com/r/daily/" + day + "/" + "leo" + ".html")
+		res, err := http.Get("https://ignio.com/r/daily/" + day + "/" + sign + ".html")
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -109,8 +116,9 @@ func (a *application) msgHandler(m *tbot.Message) {
 		if err != nil {
 			log.Fatal(err)
 		}
+		
 		doc.Find(`div[style="margin: 20px 0;"]`).Each(func(i int, s *goquery.Selection) {
-			msg = fmt.Sprintf("Гороскоп для тебя, %s: \n%s", strings.TrimRight(m.Text, " .!"), strings.TrimSpace(s.Text()))
+			msg = fmt.Sprintf("Гороскоп для тебя, %s: \n%s", sign, strings.TrimSpace(s.Text()))
 		})
 	} else {
 		answer := map[int]string{
