@@ -2,11 +2,11 @@ package main
 
 import (
 	"encoding/json"
-	"os"
 	"fmt"
 	"log"
 	"math/rand"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 
@@ -31,7 +31,7 @@ o       /  /     ,|
 		`
 
 type Author struct {
-	Sign  string `json:"sign"`
+	Sign string `json:"sign"`
 }
 
 // Handle the /start command here
@@ -65,7 +65,7 @@ func (a *application) msgHandler(m *tbot.Message) {
 		"козерог":  "capricorn",
 		"водолей":  "aquarius",
 		"рыбы":     "pisces"}
-	
+
 	if signs[strings.ToLower(strings.TrimRight(m.Text, " .!"))] != "" {
 		opt, err := redis.ParseURL(os.Getenv("REDIS_URL"))
 		client := redis.NewClient(&redis.Options{
@@ -85,14 +85,16 @@ func (a *application) msgHandler(m *tbot.Message) {
 		if err != nil {
 			fmt.Println(err)
 		}
-		msg = val[1]
+		msg = strings.TrimLeft(val, `{"sign":"`)
+		msg = strings.TrimRight(val, `"}`)
 
-	}else if m.Text == "/today" || m.Text == "/tomorrow" {
+	} else if m.Text == "/today" || m.Text == "/tomorrow" {
 		day := ""
-		if m.Text == "/today"{
+		if m.Text == "/today" {
 			day = "tod"
-		} else { 
-			day = "tom"}
+		} else {
+			day = "tom"
+		}
 		res, err := http.Get("https://ignio.com/r/daily/" + day + "/" + "leo" + ".html")
 		if err != nil {
 			log.Fatal(err)
