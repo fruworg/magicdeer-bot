@@ -81,7 +81,7 @@ func (a *application) msgHandler(m *tbot.Message) {
 		if err != nil {
 			fmt.Println(err)
 		}
-		msg = fmt.Sprintf("Знак зодиака успешно изменён, %s.", signs[strings.ToLower(strings.TrimRight(m.Text, " .!"))])
+		msg = fmt.Sprintf("Знак зодиака успешно изменён, %s.", strings.ToLower(strings.TrimRight(m.Text, " .!")))
 	} else if m.Text == "/today" || m.Text == "/tomorrow" {
 		opt, err := redis.ParseURL(os.Getenv("REDIS_URL"))
 		client := redis.NewClient(&redis.Options{
