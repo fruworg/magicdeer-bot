@@ -6,7 +6,6 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
-	"os"
 	"strings"
 	"time"
 
@@ -115,9 +114,11 @@ func (a *application) msgHandler(m *tbot.Message) {
 		}
 	}
 	if m.Text == "тест" {
-		msg = "ok"
+		opt, err := redis.ParseURL("REDIS_URL")
 		client := redis.NewClient(&redis.Options{
-			Addr:     os.Getenv("REDIS_TLS_URL"),
+			Addr:     opt.Addr,
+			Password: opt.Password,
+			DB:       opt.DB,
 		})
 
 		json, err := json.Marshal(Author{Sign: m.Text, Alert: true})
