@@ -32,7 +32,6 @@ o       /  /     ,|
 
 type Author struct {
 	Sign  string `json:"sign"`
-	Alert bool   `json:"alert"`
 }
 
 // Handle the /start command here
@@ -66,10 +65,35 @@ func (a *application) msgHandler(m *tbot.Message) {
 		"козерог":  "capricorn",
 		"водолей":  "aquarius",
 		"рыбы":     "pisces"}
-
+	
 	if signs[strings.ToLower(strings.TrimRight(m.Text, " .!"))] != "" {
-		day := "tod"
-		res, err := http.Get("https://ignio.com/r/daily/" + day + "/" + signs[strings.ToLower(strings.TrimRight(m.Text, " .!"))] + ".html")
+		opt, err := redis.ParseURL(os.Getenv("REDIS_URL"))
+		client := redis.NewClient(&redis.Options{
+			Addr:     opt.Addr,
+			Password: opt.Password,
+			DB:       opt.DB,
+		})
+		json, err := json.Marshal(Author{Sign: signs[strings.ToLower(strings.TrimRight(m.Text, " .!"))]})
+		if err != nil {
+			fmt.Println(err)
+		}
+		err = client.Set(m.Chat.ID, json, 0).Err()
+		if err != nil {
+			fmt.Println(err)
+		}
+		val, err := client.Get(m.Chat.ID).Result()
+		if err != nil {
+			fmt.Println(err)
+		}
+		msg = val
+	}
+	
+	if m.Text == "/today" || "/tomorrow" || {
+		if m.Text == "/today"{
+			day := "tod"
+		} else { 
+			day := "tom"}
+		res, err := http.Get("https://ignio.com/r/daily/" + day + "/" + "leo" + ".html")
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -113,28 +137,6 @@ func (a *application) msgHandler(m *tbot.Message) {
 			rnd := rand.Intn(10)
 			msg = answer[rnd]
 		}
-	}
-	if m.Text == "тест" {
-		opt, err := redis.ParseURL(os.Getenv("REDIS_URL"))
-		client := redis.NewClient(&redis.Options{
-			Addr:     opt.Addr,
-			Password: opt.Password,
-			DB:       opt.DB,
-		})
-
-		json, err := json.Marshal(Author{Sign: m.Text, Alert: true})
-		if err != nil {
-			fmt.Println(err)
-		}
-		err = client.Set(m.Chat.ID, json, 0).Err()
-		if err != nil {
-			fmt.Println(err)
-		}
-		val, err := client.Get(m.Chat.ID).Result()
-		if err != nil {
-			fmt.Println(err)
-		}
-		msg = val
 	}
 	if strings.ToLower(strings.TrimRight(m.Text, " .!")) == "спасибо" {
 		msg = "Пожалуйста"
