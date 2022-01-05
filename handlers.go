@@ -85,6 +85,7 @@ func (a *application) msgHandler(m *tbot.Message) {
 		if err != nil {
 			fmt.Println(err)
 		}
+		fmt.Println(val)
 		msg = strings.TrimPrefix(val, `{"sign":"`)
 		msg = strings.TrimRight(val, `"}`)
 
