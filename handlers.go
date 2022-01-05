@@ -82,7 +82,7 @@ func (a *application) msgHandler(m *tbot.Message) {
 		if err != nil {
 			fmt.Println(err)
 		}
-		msg = fmt.Sprintf("Знак зодиака изменён, %s.", strings.ToLower(strings.TrimRight(m.Text, " .!")))
+		msg = fmt.Sprintf("Знак зодиака изменён, %s.", strings.TrimRight(m.Text, " .!"))
 	} else if m.Text == "/today" || m.Text == "/tomorrow" {
 		sign, err := client.Get(m.Chat.ID).Result()
 		if err == redis.Nil {
