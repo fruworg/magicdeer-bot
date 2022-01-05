@@ -16,7 +16,7 @@ import (
 )
 
 var opt, err = redis.ParseURL(os.Getenv("REDIS_URL"))
-	client := redis.NewClient(&redis.Options{
+var client = redis.NewClient(&redis.Options{
 		Addr:     opt.Addr,
 		Password: opt.Password,
 		DB:       opt.DB,
