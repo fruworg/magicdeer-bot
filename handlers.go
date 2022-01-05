@@ -114,7 +114,7 @@ func (a *application) msgHandler(m *tbot.Message) {
 		}
 	}
 	if m.Text == "тест" {
-		opt, err := redis.ParseURL("REDIS_URL")
+		opt, err := redis.ParseURL(os.Getenv("REDIS_URL"))
 		client := redis.NewClient(&redis.Options{
 			Addr:     opt.Addr,
 			Password: opt.Password,
