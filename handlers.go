@@ -86,7 +86,7 @@ func (a *application) msgHandler(m *tbot.Message) {
 			fmt.Println(err)
 		}
 		fmt.Println(val)
-		msg = strings.TrimLeft(val, `{"`)
+		msg = strings.TrimLeft(val, "{")
 		msg = strings.TrimRight(val, `"}`)
 
 	} else if m.Text == "/today" || m.Text == "/tomorrow" {
