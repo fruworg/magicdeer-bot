@@ -81,13 +81,12 @@ func (a *application) msgHandler(m *tbot.Message) {
 		if err != nil {
 			fmt.Println(err)
 		}
-		val, err := client.Get(m.Chat.ID).Result()
+		msg, err := client.Get(m.Chat.ID).Result()
 		if err != nil {
 			fmt.Println(err)
 		}
-		fmt.Println(val)
-		msg = strings.TrimLeft(val, "{")
-		msg = strings.TrimRight(val, `"}`)
+		msg = strings.TrimLeft(msg, `{"sign":"`
+		msg = strings.TrimRight(msg, `"}`)
 
 	} else if m.Text == "/today" || m.Text == "/tomorrow" {
 		day := ""
