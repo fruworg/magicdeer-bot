@@ -15,6 +15,13 @@ import (
 	"github.com/yanzay/tbot/v2"
 )
 
+var opt, err = redis.ParseURL(os.Getenv("REDIS_URL"))
+	client := redis.NewClient(&redis.Options{
+		Addr:     opt.Addr,
+		Password: opt.Password,
+		DB:       opt.DB,
+	})
+
 //deer by asciiart.eu
 //flower by eng50232@leonis.nus.sg
 var magicDeer = `
@@ -67,12 +74,6 @@ func (a *application) msgHandler(m *tbot.Message) {
 		"рыбы":     "pisces"}
 
 	if signs[strings.ToLower(strings.TrimRight(m.Text, " .!"))] != "" {
-		opt, err := redis.ParseURL(os.Getenv("REDIS_URL"))
-		client := redis.NewClient(&redis.Options{
-			Addr:     opt.Addr,
-			Password: opt.Password,
-			DB:       opt.DB,
-		})
 		json, err := json.Marshal(Author{Sign: m.Text})
 		if err != nil {
 			fmt.Println(err)
@@ -83,12 +84,6 @@ func (a *application) msgHandler(m *tbot.Message) {
 		}
 		msg = fmt.Sprintf("Знак зодиака изменён, %s.", strings.ToLower(strings.TrimRight(m.Text, " .!")))
 	} else if m.Text == "/today" || m.Text == "/tomorrow" {
-		opt, err := redis.ParseURL(os.Getenv("REDIS_URL"))
-		client := redis.NewClient(&redis.Options{
-			Addr:     opt.Addr,
-			Password: opt.Password,
-			DB:       opt.DB,
-		})
 		sign, err := client.Get(m.Chat.ID).Result()
 		if err == redis.Nil {
         		msg = "Сначала выбери знак зодиака!\nКоманда /start в помощь."
