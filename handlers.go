@@ -88,11 +88,12 @@ func (a *application) msgHandler(m *tbot.Message) {
 		msg = val
 	}
 	
-	if m.Text == "/today" || "/tomorrow" || {
+	if m.Text == "/today" || m.Text == "/tomorrow" {
+		day := ""
 		if m.Text == "/today"{
-			day := "tod"
+			day = "tod"
 		} else { 
-			day := "tom"}
+			day = "tom"}
 		res, err := http.Get("https://ignio.com/r/daily/" + day + "/" + "leo" + ".html")
 		if err != nil {
 			log.Fatal(err)
