@@ -73,7 +73,7 @@ func (a *application) msgHandler(m *tbot.Message) {
 			Password: opt.Password,
 			DB:       opt.DB,
 		})
-		json, err := json.Marshal(Author{Sign: signs[strings.ToLower(strings.TrimRight(m.Text, " .!"))]})
+		json, err := json.Marshal(Author{Sign: m.Text})
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -102,7 +102,7 @@ func (a *application) msgHandler(m *tbot.Message) {
 		} else {
 			day = "tom"
 		}
-		res, err := http.Get("https://ignio.com/r/daily/" + day + "/" + sign + ".html")
+		res, err := http.Get("https://ignio.com/r/daily/" + day + "/" + signs[strings.ToLower(strings.TrimRight(sign, " .!"))] + ".html")
 		if err != nil {
 			log.Fatal(err)
 		}
