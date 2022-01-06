@@ -1,3 +1,4 @@
+### [t.me/magicdeerbot](https://t.me/magicdeerbot) 
 ```
                             .__           .___                           ___.           __   
        _____ _____     ____ |__| ____   __| _/____   ___________         \_ |__   _____/  |_ 
@@ -6,5 +7,6 @@
      |__|_|  (____  /\___  /|__|\___  >____ |\___  >\___  >__|            |___  /\____/|__|  
            \/     \//_____/         \/     \/    \/     \/                    \/             
 ```
-### [t.me/magicdeerbot](https://t.me/magicdeerbot) 
-[ignio.com](https://ignio.com) + [redis](https://github.com/go-redis/redis) + [tbot](https://github.com/yanzay/tbot) <br />
+Сакральный олень теперь и в телеграме. Гороскопы,<br />
+Выбор из нескольких вариантов и ответы на вопросы.
+Сделано с помощью: [ignio.com](https://ignio.com) + [redis](https://github.com/go-redis/redis) + [tbot](https://github.com/yanzay/tbot). 
