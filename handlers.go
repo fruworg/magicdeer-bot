@@ -90,12 +90,11 @@ func (a *application) msgHandler(m *tbot.Message) {
 		} else {
 		sign = strings.TrimLeft(sign, `{"sign":"`)
 		sign = strings.TrimRight(sign, `"}`)
-		
-		day := ""
-		if m.Text == "/today" {
-			day = "tod"
-		} else {
+		day := "tod"
+		outday := "на сегодня"
+		if m.Text != "/today" {
 			day = "tom"
+			outday = "на завтра"
 		}
 		res, err := http.Get("https://ignio.com/r/daily/" + day + "/" + signs[strings.ToLower(strings.TrimRight(sign, " .!"))] + ".html")
 		if err != nil {
@@ -113,7 +112,7 @@ func (a *application) msgHandler(m *tbot.Message) {
 		}
 		
 		doc.Find(`div[style="margin: 20px 0;"]`).Each(func(i int, s *goquery.Selection) {
-			msg = fmt.Sprintf("Гороскоп для тебя, %s: \n%s", sign, strings.TrimSpace(s.Text()))
+			msg = fmt.Sprintf("Гороскоп %s, %s: \n%s", outday, sign, strings.TrimSpace(s.Text()))
 		})}
 	} else {
 		answer := map[int]string{
