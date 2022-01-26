@@ -110,13 +110,12 @@ func (a *application) msgHandler(m *tbot.Message) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		/*resText := s.Text()
+		btext := fmt.Sprintf("%s", s.Text())
 		if m.Text == "/tomorrow"{
 		replacer := strings.NewReplacer("Сегодня", "Завтра", "сегодня", "завтра")
-		resText = replacer.Replace(s.Text())	
-		}*/
+		btext = replacer.Replace(btext)}
 		doc.Find(`div[style="margin: 20px 0;"]`).Each(func(i int, s *goquery.Selection) {
-			msg = fmt.Sprintf("Гороскоп %s, %s: \n%s", outday, sign, strings.TrimSpace(s.Text()))
+			msg = fmt.Sprintf("Гороскоп %s, %s: \n%s", outday, sign, strings.TrimSpace(btext))
 		})}
 	} else {
 		answer := map[int]string{
