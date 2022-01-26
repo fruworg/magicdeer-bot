@@ -110,7 +110,10 @@ func (a *application) msgHandler(m *tbot.Message) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		
+		if m.Text == "/tomorrow"{
+		replacer := strings.NewReplacer("Сегодня", "Завтра", "сегодня", "завтра")
+		s.Text = replacer.Replace(s.Text)	
+		}
 		doc.Find(`div[style="margin: 20px 0;"]`).Each(func(i int, s *goquery.Selection) {
 			msg = fmt.Sprintf("Гороскоп %s, %s: \n%s", outday, sign, strings.TrimSpace(s.Text()))
 		})}
